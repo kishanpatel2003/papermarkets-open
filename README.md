@@ -14,7 +14,7 @@ Collect prediction-market data and replay market orders against historical order
 Python 3.12+. Run the standard-library fill example:
 
 ```sh
-PYTHONPATH=src python3 scripts/demo.py
+PYTHONPATH=src python3 scripts/order_fill.py
 ```
 
 It buys 250 example shares across three ask levels. No API key or dataset needed.
@@ -23,7 +23,7 @@ Install the full environment and run the tests with [uv](https://docs.astral.sh/
 
 ```sh
 uv sync --group dev
-PYTHONPATH=src uv run python scripts/demo.py
+PYTHONPATH=src uv run python scripts/order_fill.py
 PYTHONPATH=src uv run pytest -q
 ```
 
