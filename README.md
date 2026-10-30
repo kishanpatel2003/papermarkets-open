@@ -1,23 +1,25 @@
 # PaperMarkets
 
-A Python prototype for collecting prediction-market data and replaying market orders against historical order books. The core models depth-aware fills instead of assuming every trade executes at the displayed price.
+Collect prediction-market data and replay market orders against historical order books. Depth-aware fills account for available liquidity rather than assuming every trade executes at the displayed price.
 
-## What is implemented
+## Components
 
-- Concurrent ingestion clients with retries, resumable progress and Parquet storage
-- DuckDB analytical queries and data-quality checks
-- Order-book walking, position tracking, simulation metrics and coverage checks
-- An experimental live market monitor
+- Concurrent API ingestion with retries, resumable progress, and Parquet storage
+- DuckDB queries and data-quality checks
+- Order-book walking, position tracking, simulation metrics, and coverage checks
+- Live market monitoring
 
-## Run an offline example
+## Getting started
 
-Python 3.12+ is required. The small fill example uses only the Python standard library:
+Python 3.12+. Run the standard-library fill example:
 
 ```sh
 PYTHONPATH=src python3 scripts/demo.py
 ```
 
-For all dependencies and the full synthetic test suite, use [uv](https://docs.astral.sh/uv/):
+It buys 250 example shares across three ask levels. No API key or dataset needed.
+
+Install the full environment and run the tests with [uv](https://docs.astral.sh/uv/):
 
 ```sh
 uv sync --group dev
@@ -25,18 +27,16 @@ PYTHONPATH=src uv run python scripts/demo.py
 PYTHONPATH=src uv run pytest -q
 ```
 
-The example buys 250 synthetic shares across three ask levels. It needs no key or external data. Tests use synthetic fixtures; no private datasets or real wallet fixtures are bundled.
-
 ## Architecture
 
-`src/papermarkets/ingest` handles APIs and Parquet writes; `validation` checks stored data; `queries` isolates DuckDB access; `simulator` composes book walking, position accounting and results. `monitor` is an experimental consumer of market feeds.
+`ingest/` handles APIs and Parquet writes; `validation/` checks stored data; `queries/` isolates DuckDB access; `simulator/` composes book walking, position accounting, and results; `monitor/` consumes market feeds. All modules live under `src/papermarkets/`.
 
-For optional ingestion, put `DOME_API_KEY` in a local `.env` file. Never commit credentials. Ingestion endpoints and provider availability need verification before a new collection run; the offline demo is the supported first entry point.
+For ingestion, set `DOME_API_KEY` in a local `.env` file and check provider availability before collecting data.
 
-## Current limits
+## Current work
 
-This is research software. Historical data coverage was incomplete, and full real-dataset simulation was not verified end to end because of query-performance constraints. Resolution inference and token-price semantics require further validation. Unit tests establish component behavior, not trading profitability or production readiness. No real market dataset or private research notes are included in this source release.
+Full-dataset replay remains limited by query performance and incomplete historical coverage. Resolution inference and token-price handling still need end-to-end validation.
 
 ## License
 
-MIT
+[MIT](LICENSE)

@@ -1,4 +1,4 @@
-"""Offline example: a market buy consumes several synthetic price levels."""
+"""Offline example: a market buy consumes several example price levels."""
 from dataclasses import asdict
 import json
 from papermarkets.simulator.book_walker import simulate_fill
